@@ -117,15 +117,16 @@ bool is_attacked(int square, Color atk_color) {
 			}
 			else {
 				// Look at available moves for each piece. Check if it is within bounds
-				for (int j = 0; j < num_directions[pc>>2]; ++j) { /* for all knight or ray directions */
+				int piece_type = pc >> 1;
+				for (int j = 0; j < num_directions[piece_type]; ++j) { /* for all knight or ray directions */
 					for (int n = i;;) { /* starting with from square */
-						n = board[board_map[n] + offset[pc>>2][j]]; /* next square along the ray j */
+						n = board[board_map[n] + offset[piece_type][j]]; /* next square along the ray j */
 						if (n == square) {
 							return true;
 						}
 						if (n == -1) break; /* outside board */
 						if (piece[n] != Empty) { break; } // Piece is blocking path
-						if (!slide[pc >> 2]) { break; } 
+						if (!slide[piece_type]) { break; } 
 						
 					}
 				}
@@ -145,6 +146,13 @@ bool is_color(Piece piece, Color color) {
 void init_board(Piece pieces[]) {
 	for (int i = 0; i < 64; i++) {
 		piece[i] = pieces[i];
+	}
+}
+
+void init_board() {
+	for (int i = 0; i < 64; i++)
+	{
+		piece[i] = init_piece[i];
 	}
 }
 

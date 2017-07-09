@@ -25,24 +25,22 @@ namespace SisyphusTest
 			init_board(testboard);
 		}
 
-
 		TEST_METHOD(Verify_G6_Pawn_Attacks_Two_Squares)
 		{
 			Assert::AreEqual(true, is_attacked(48, White));
 			Assert::AreEqual(true, is_attacked(50, White));
-			
-			
-			//Assert::AreEqual(true, is_attacked(12, Black));
 			//// Squares that should not be attacked
 			//Assert::AreEqual(false, is_attacked(0, Black));
 			//Assert::AreEqual(false, is_attacked(1, Black));
 			//Assert::AreEqual(false, is_attacked(5, Black));
 		}
+
 		TEST_METHOD(Verify_H3_Pawn_Attacks_One_Square)
 		{
 			Assert::AreEqual(true, is_attacked(9, Black));
 			Assert::AreEqual(false, is_attacked(11, Black));
 		}
+
 		TEST_METHOD(Verify_A3_Bishop_Attacks_One_Square_On_Diagonal)
 		{
 			Assert::AreEqual(true, is_attacked(51, White));
@@ -53,7 +51,21 @@ namespace SisyphusTest
 		{
 			Assert::AreEqual(true, is_attacked(62, Black), L"B8-square");
 			Assert::AreEqual(true, is_attacked(55, Black), L"A7-square");
+			Assert::AreEqual(true, is_attacked(60, Black), L"D8-square");
+			Assert::AreEqual(true, is_attacked(51, Black), L"E7-square");
 			Assert::AreEqual(true, is_attacked(39, Black), L"A5-square");
+			Assert::AreEqual(true, is_attacked(35, Black), L"E5-square");
+			Assert::AreEqual(true, is_attacked(28, Black), L"D4-square");
+		}
+		TEST_METHOD(Verify_D8_Queen_Attacks_White_D2_Pawn) 
+		{
+			Assert::AreEqual(true, is_attacked(12, Black));
+		}
+
+		TEST_METHOD(Verify_A5_Queen_Attacks_Multiple_Pawns_And_Not_H5_Knight)
+		{
+			Assert::AreEqual(true, is_attacked(55, White), L"A7-square");
+			Assert::AreEqual(true, is_attacked(53, White), L"C7-square");
 		}
 
 	};
