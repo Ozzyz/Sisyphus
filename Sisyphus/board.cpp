@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include <iostream>
 #include "board.h"
+#include "move.h"
 /*
 This is the main core of the chess engine - the board
 This board is using a 10x12 layout (see https://chessprogramming.wikispaces.com/10x12+Board)
@@ -13,7 +14,7 @@ This program is heavily inspired by
 #define ROW(x)			(x >> 3)
 #define COL(x)			(x & 7)
 int NUM_BOARD_SQUARES = 10 * 12;
-int turn = 12;
+int turn = 0;
 Color to_move = White; // Which side to move next
 // Arrays for keeping track of what piece is at a square
 
@@ -107,11 +108,9 @@ bool is_attacked(int square, Color atk_color) {
 			if (PAWN(pc)) {
 				// Reverse attacking direction if black
 				if (COL(i) != 7  && (i + 7*mod) == square){
-					std::cout << "Attaking Piece: " << pc << "Square: " << i;
 					return true;
 				}
 				if (COL(i) != 0 && (i + 9*mod) == square){
-					std::cout << "Attaking Piece: " << pc << "Square: " << i;
 					return true;
 				}
 			}
@@ -126,17 +125,78 @@ bool is_attacked(int square, Color atk_color) {
 						}
 						if (n == -1) break; /* outside board */
 						if (piece[n] != Empty) { break; } // Piece is blocking path
-						if (!slide[piece_type]) { break; } 
-						
+						if (!slide[piece_type]) { break; } 	
 					}
 				}
 			}
-			
-			
 		}
 	}
 	return false;
 }
+
+void generate_all_moves(Color current_side) {
+	// Add all possible pseudomoves (include illegal moves, for example that the moves puts the moving color in check)
+	// TODO: Castling moves
+	// TODO: Dont calculate this each round, maybe use some delta-algorithm? 
+	Color opponent_color = current_side^1;
+	// Reverse attacking direction if black
+	int mod = current_side == Black ? -1 : 1;
+	for (int i = 0; i < 64; i++) {
+		if (is_color(piece[i], current_side)) {
+			Piece pc = piece[i];
+			if (PAWN(pc)) {
+				// TODO: Check en passant
+				// Regular pawn captures (that may lead to promotion)
+				if (COL(i) != 7 && is_color(piece[(i + 7 * mod)], opponent_color)) {
+					generate_move(i, i + 7*mod, Capture);
+				}
+				if (COL(i) != 0 &&  is_color(piece[(i + 9 * mod)], opponent_color)) {
+					generate_move(i, i + 9 * mod, Capture);
+				}
+				// Pawn moves
+
+				// One step forward
+				if (piece[i + 8 * mod] == Empty) {
+					// TODO: What should we pass in as flag? May be promotion or normal step
+					generate_move(i, i + 8 * mod, Quiet);
+				}
+				// Two steps forward
+				if (piece[i + 2 * 8 * mod] == Empty && (i >= 48 && is_color(pc, Black) || i <= 15 && is_color(pc, White) )) {
+					generate_move(i, i + 2 * 8 * mod, DoublePawn);
+				}
+				
+			}
+			else {
+				// Look at available moves for each piece. Check if it is within bounds
+				int piece_type = pc >> 1;
+				for (int j = 0; j < num_directions[piece_type]; ++j) { /* for all knight or ray directions */
+					for (int n = i;;) { /* starting with from square */
+						n = board[board_map[n] + offset[piece_type][j]]; /* next square along the ray j */
+						if (n == i) {
+							// If the square is unoccupied
+							if (piece[n] == Empty) {
+								generate_move(i, n, Quiet);
+							}
+							// If the square we are attacking has opponents piece
+							if (is_color(piece[n], opponent_color)) {
+								generate_move(i, n, Capture);
+							}
+							
+						}
+						if (n == -1) break; /* outside board */
+						if (piece[n] != Empty) { break; } // Piece is blocking path
+						if (!slide[piece_type]) { break; }
+					}
+				}
+			}
+		}
+	}
+}
+
+void generate_move(int from, int to, int flags) {
+
+}
+
 
 bool is_color(Piece piece, Color color) {
 	// Since all white pieces are even numbered, and the color white is 0, the following is correct

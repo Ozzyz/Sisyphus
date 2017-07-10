@@ -12,6 +12,7 @@ namespace SisyphusTest
 		TEST_METHOD_INITIALIZE(Setup_Board)
 		{
 			// Testboard: https://lichess.org/editor/r1bqkb1r/ppp1pppp/2n3P1/Q5Rn/8/B6p/PPPPPPPP/RN2KBN1_w_KQkq_-
+			// Note: If this board changes, the tests are no longer valid!
 			Piece testboard[64] = {
 				Empty, wKnight, wBishop, wKing, Empty, Empty, wKnight, wRook,
 				wPawn, wPawn, wPawn, wPawn, wPawn, wPawn, wPawn, wPawn,
@@ -29,10 +30,14 @@ namespace SisyphusTest
 		{
 			Assert::AreEqual(true, is_attacked(48, White));
 			Assert::AreEqual(true, is_attacked(50, White));
-			//// Squares that should not be attacked
-			//Assert::AreEqual(false, is_attacked(0, Black));
-			//Assert::AreEqual(false, is_attacked(1, Black));
-			//Assert::AreEqual(false, is_attacked(5, Black));
+			
+		}
+
+		TEST_METHOD(Verify_Unattacked_Squares) {
+			// Squares that should not be attacked
+			Assert::AreEqual(false, is_attacked(0, Black));
+			Assert::AreEqual(false, is_attacked(1, Black));
+			Assert::AreEqual(false, is_attacked(5, Black));
 		}
 
 		TEST_METHOD(Verify_H3_Pawn_Attacks_One_Square)

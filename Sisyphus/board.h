@@ -28,5 +28,9 @@ DllExport void init_board(Piece piece[]);
 DllExport void init_board();
 DllExport bool is_attacked(int square, Color color);
 
+void generate_all_moves(Color current_side);
+
+void generate_move(int from, int to, int flags);
+
 //DllExport void generate_move(int from, int to, bool capture);
 DllExport bool is_color(Piece piece, Color color);
