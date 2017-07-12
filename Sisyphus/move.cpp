@@ -1,31 +1,7 @@
 
 #include "move.h"
 
-/*
-The move is represented by a 16-bit field
-From lowest to highest:
-6 bit - From square 
-6 bit - To square
-4 bit - Special moves (pawn promotion, where each bit is promote to {Knight, Bishop, Rook, Queen}
-Table for the last 4 bits:
 
-0000 : quiet moves (No captures or promotions)
-0001 : double pawn push (Move two squares from initial pawn position)
-0010 : King castle
-0011 : Queen castle
-0100 : Captures
-0101 : En-passant capture
-0110 : Unused
-0111 : Unused
-1000 : Knight promotion
-1001 : Bishop promotion 
-1010 : Rook promotion
-1011 : Queen promotion
-1100 :Knight promotion capture 
-1101 : Bishop promotion capture
-1110 :  Rook promotion capture
-1111 : Queen promotion capture
-*/
 
 
 
