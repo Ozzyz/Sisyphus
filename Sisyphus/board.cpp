@@ -1,33 +1,81 @@
 #include "stdafx.h"
-#include <iostream>
 #include "board.h"
-#include "move.h"
+
 /*
 This is the main core of the chess engine - the board
 This board is using a 10x12 layout (see https://chessprogramming.wikispaces.com/10x12+Board)
-White pieces start at index 12 (top)
-This program is heavily inspired by 
+White pieces start at index 0 (top)
 */
 
 
 #define PAWN(piece) ((piece & 14) == 0)
 #define ROW(x)			(x >> 3)
 #define COL(x)			(x & 7)
-int NUM_BOARD_SQUARES = 10 * 12;
-int turn = 0;
-Color to_move = White; // Which side to move next
-// Arrays for keeping track of what piece is at a square
 
-/* Used to keep track over castling rights
-The two leftmost bits is whether white can castle
-First is Queenside, then Kingside
-The same for black (two rightmost bits)
-*/
-int castling = 0b1111;
+static const string default_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+void parse_fen(string, Board&);
+
+
+Board::Board()
+{
+	turn = 0;
+	// Enable all castling rights
+	castling = 0b1111;
+	to_move = White;
+	parse_fen(default_fen, *this);
+}
+
+Board::Board(string fen):Board()
+{
+	parse_fen(fen, *this);
+}
+
+int Board::get_ep_square()
+{
+	return ep_square;
+}
+
+int Board::get_castling_rights()
+{
+	return castling;
+}
+
+Color Board::get_to_move()
+{
+	return to_move;
+}
+
+int Board::get_turn()
+{
+	return turn;
+}
+
+void Board::set_turn(int _turn)
+{
+	turn = _turn;
+}
+
+void Board::set_to_move(Color _to_move)
+{
+	to_move = _to_move;
+}
+
+void Board::set_ep_square(int _ep_square)
+{
+	ep_square = _ep_square;
+}
+
+void Board::set_castling_rights(int _castling)
+{
+	castling = _castling;
+}
+
+
+
 
 Piece piece[64] = {};
 
-int board[120] = {
+int mailbox_board[120] = {
 	-1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 	-1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
 	-1,  0,  1,  2,  3,  4,  5,  6,  7, -1,
@@ -119,7 +167,7 @@ bool is_attacked(int square, Color atk_color) {
 				int piece_type = pc >> 1;
 				for (int j = 0; j < num_directions[piece_type]; ++j) { /* for all knight or ray directions */
 					for (int n = i;;) { /* starting with from square */
-						n = board[board_map[n] + offset[piece_type][j]]; /* next square along the ray j */
+						n = mailbox_board[board_map[n] + offset[piece_type][j]]; /* next square along the ray j */
 						if (n == square) {
 							return true;
 						}
@@ -171,7 +219,7 @@ void generate_all_moves(Color current_side) {
 				int piece_type = pc >> 1;
 				for (int j = 0; j < num_directions[piece_type]; ++j) { /* for all knight or ray directions */
 					for (int n = i;;) { /* starting with from square */
-						n = board[board_map[n] + offset[piece_type][j]]; /* next square along the ray j */
+						n = mailbox_board[board_map[n] + offset[piece_type][j]]; /* next square along the ray j */
 						if (n == i) {
 							// If the square is unoccupied
 							if (piece[n] == Empty) {
@@ -216,7 +264,3 @@ void init_board() {
 	}
 }
 
-
-int main(int argc, char* argv[]){
-	std::cin.get();
-}

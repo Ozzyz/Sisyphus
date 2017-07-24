@@ -1,7 +1,9 @@
+
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "../Sisyphus/board.h"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+
 
 namespace SisyphusTest
 {
