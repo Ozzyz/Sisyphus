@@ -12,7 +12,7 @@ using std::string;
 
 int get_castle_permissions(string);
 
-void fill_empty(int board[64]) {
+void fill_empty(Piece board[64]) {
 	for (int i = 0; i < 64; i++)
 	{
 		board[i] = Empty;
@@ -20,7 +20,6 @@ void fill_empty(int board[64]) {
 }
 
 void parse_fen(string fen,Board &boardclass) {
-	fill_empty(boardclass.board);
 	int castling = 0;
 	Color next_move;
 	int ep_square;
@@ -28,7 +27,9 @@ void parse_fen(string fen,Board &boardclass) {
 	int count = 0;
 	int file = 7;
 	int rank = 7;
-	
+	Piece pieces[64];
+	fill_empty(pieces);
+
 	int fen_pos = 0;
 	for (int i = 0; i < fen.length(); i++)
 	{
@@ -51,6 +52,7 @@ void parse_fen(string fen,Board &boardclass) {
 		
 		else if (count >= 64){
 			// Finished parsing pieces
+			boardclass.set_board(pieces);
 			break;
 		}
 		else {
@@ -97,10 +99,10 @@ void parse_fen(string fen,Board &boardclass) {
 				break;
 			}
 			int index = 8 * rank + file;
-			if (index < 0) {
-				break;
+			if (index < 0 && index < 64) {
+				continue;
 			}
-			boardclass.board[index] = pc;
+     		pieces[index] = pc;
 			count++;
 			file--;
 		}

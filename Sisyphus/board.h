@@ -4,8 +4,10 @@
 #define DllImport __declspec(dllimport)
 #include "stdafx.h"
 #include <iostream>
+#include <vector>
 //#include "fen.h"
 #include "move.h"
+using std::vector;
 using std::string;
 // Handy square definitions
 static const int A1 = 7;
@@ -32,6 +34,16 @@ typedef enum {
 	bCastleQueen = 1
 }CastlePermissions;
 
+typedef enum {
+	wPawn = 0, bPawn = 1,
+	wKnight = 2, bKnight = 3,
+	wBishop = 4, bBishop = 5,
+	wRook = 6, bRook = 7,
+	wQueen = 8, bQueen = 9,
+	wKing = 10, bKing = 11,
+	Empty = 12
+}Piece;
+
 class Board {
 private:
 	static const int NUM_BOARD_SQUARES = 10 * 12;
@@ -50,7 +62,7 @@ private:
 public:
 	Board();
 	Board(string fen);
-	int board[BOARD_SIZE];
+	Piece board[BOARD_SIZE];
 	int get_ep_square();
 	int get_castling_rights();
 	Color get_to_move();
@@ -59,17 +71,10 @@ public:
 	void set_to_move(Color to_move);
 	void set_ep_square(int ep_square);
 	void set_castling_rights(int castling);
+	void set_board(Piece pieces[64]);
 };
 
-typedef enum {
-	wPawn = 0, bPawn = 1,
-	wKnight = 2, bKnight = 3,
-	wBishop = 4, bBishop = 5,
-	wRook = 6, bRook = 7,
-	wQueen = 8, bQueen = 9,
-	wKing = 10, bKing = 11,
-	Empty = 12
-}Piece;
+
 
 extern Piece piece[64];
 extern Piece init_piece[64];
@@ -82,6 +87,6 @@ DllExport bool is_attacked(int square, Color color);
 //DllExport void generate_move(int from, int to, bool capture);
 DllExport bool is_color(Piece piece, Color color);
 
-void generate_all_moves(Color current_side);
-void generate_move(int from, int to, int flags);
+vector<Move> generate_all_moves(Color current_side, Board);
+void generate_move(int from, int to, int flags, vector<Move>&);
 

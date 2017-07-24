@@ -31,7 +31,7 @@ Table for the last 4 bits:
 class Move {
 protected:
 	unsigned short move;
-
+public:
 	Move(unsigned int from, unsigned int to, unsigned int flags) {
 		move = (from & 0b111111) | ((to & 0b111111) << 6) | ((flags & 0b111111) << 12);
 	}
@@ -50,6 +50,8 @@ protected:
 
 	bool operator==(Move a) const { return (move & 0xffff) == (a.move & 0xffff); }
 	bool operator!=(Move a) const { return (move & 0xffff) != (a.move & 0xffff); }
+
+	std::string toString() {return "From: " + std::to_string(from_square()) + ", To: " + std::to_string(to_square()) + ", Flags: " + std::to_string(get_flags()); }
 };
 
 

@@ -9,7 +9,7 @@
 void print_piece(Piece);
 using namespace std;
 
-void print_board(int board[64]) {
+void print_board(Piece board[64]) {
 	for (int i = 0; i < 64; i++)
 	{
 		if (i % 8 == 0) {
@@ -42,7 +42,7 @@ void print_piece(Piece pc) {
 	//HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
 	//DWORD written = 0;
 	// explicitly call the wide version (which always accepts UTF-16)
-	wcout << char_pieces[pc];
+	std::cout << char_pieces[pc];
 }
 
 int square_to_board_index(string square) {

@@ -74,6 +74,5 @@ namespace SisyphusTest
 			Assert::AreEqual(true, is_attacked(55, White), L"A7-square");
 			Assert::AreEqual(true, is_attacked(53, White), L"C7-square");
 		}
-
 	};
 }

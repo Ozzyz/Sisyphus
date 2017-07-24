@@ -9,10 +9,9 @@
 int main()
 {
 	string starting_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-	Board board = Board();
-	parse_fen(starting_fen, board);
+	Board board = Board(starting_fen);
 	print_board(board.board);
-	std::cout << "Test";
+	std::vector<Move> moves = generate_all_moves(White, board);
 	std::cin.get();
 }
 

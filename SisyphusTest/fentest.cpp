@@ -41,9 +41,9 @@ namespace SisyphusTest
 			// Check that all castling permissions are intact
 			int castling = wCastleKing | wCastleQueen | bCastleKing | bCastleQueen;
 			Assert::AreEqual(castling, boardc.get_castling_rights(), L"Castle rights are not equal");
-			// Turns 
+			// Turns (ply)
 			int turns = 0;
-			Assert::AreEqual(turns, boardc.get_turn());
+			Assert::AreEqual(3, boardc.get_turn(), L"Turns not equal");
 		}
 		TEST_METHOD(Parse_Starting_Board)
 		{
@@ -51,10 +51,19 @@ namespace SisyphusTest
 			parse_fen(starting_fen, boardc);
 			for (int square = 0; square < 64; square++)
 			{
-				Assert::AreEqual((int)init_piece[square], boardc.board[square], std::to_wstring(square).c_str());
+				Assert::AreEqual((int)init_piece[square], (int)boardc.board[square], std::to_wstring(square).c_str());
 			}
-			// 
 		}
 		
+		TEST_METHOD(Verify_NumberOfAvailableMoves_AtStartPosition) {
+			string starting_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+			parse_fen(starting_fen, boardc);
+			vector<Move> available_moves = generate_all_moves(White, boardc);
+
+			Assert::AreEqual(20, (int)available_moves.size(), L"Available moves for white at startposition");
+			generate_all_moves(Black, boardc);
+			Assert::AreEqual(20, (int)available_moves.size(), L"Available moves for black at startposition");
+
+		}
 	};
 }
