@@ -77,7 +77,19 @@ void Board::set_board(Piece pieces[64]) {
 	}
 }
 
+void Board::make_move(Move &move) {
+	// Makes the given move on the board, update piece count for captures/promotions
+	update_piece_count_list(move);
+	Piece moved = board[move.from_square()];
+	board[move.from_square()] = Empty;
+	board[move.to_square()] = moved;
+}
 
+void Board::update_piece_count_list(Move &move) {
+	// Since a move can be both a capture and a promotion, we need to check for both
+	//TODO: Implement this.
+	return;
+}
 
 Piece piece[64] = {};
 
@@ -230,7 +242,7 @@ vector<Move> generate_all_moves(Color current_side, Board board) {
 						n = mailbox_board[board_map[n] + offset[piece_type][j]]; /* next square along the ray j */
 						// If the square is inside our board
 						if (n != -1) {
-							// If the square is unoccupied
+							
 							if (board.board[n] == Empty) {
 								generate_move(i, n, Quiet, moves);
 							}

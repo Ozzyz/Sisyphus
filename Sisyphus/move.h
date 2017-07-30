@@ -28,6 +28,24 @@ Table for the last 4 bits:
 */
 
 
+
+typedef enum {
+	Quiet = 0,
+	DoublePawn = 1,
+	KCastle = 2,
+	QCastle = 3,
+	Capture = 4,
+	EnPassant = 5,
+	KnightPromo = 8,
+	BishopPromo = 9,
+	RookPromo = 10,
+	QueenPromo = 11,
+	KnightPromoCapture = 12,
+	BishopPromoCapture = 13,
+	RookPromoCapture = 14,
+	QueenPromoCapture = 15
+}MoveType;
+
 class Move {
 protected:
 	unsigned short move;
@@ -48,27 +66,17 @@ public:
 		return (move >> 12) & 0b111111;
 	}
 
+	bool is_capture() {
+		return get_flags() == Capture;
+	}
+	bool is_promotion() {
+		// TODO: Test this
+		return get_flags() & 0b1000;
+	}
+
 	bool operator==(Move a) const { return (move & 0xffff) == (a.move & 0xffff); }
 	bool operator!=(Move a) const { return (move & 0xffff) != (a.move & 0xffff); }
 
 	std::string toString() {return "From: " + std::to_string(from_square()) + ", To: " + std::to_string(to_square()) + ", Flags: " + std::to_string(get_flags()); }
 };
 
-
-
-typedef enum{
-	Quiet = 0,
-	DoublePawn = 1,
-	KCastle = 2,
-	QCastle = 3,
-	Capture = 4,
-	EnPassant = 5,
-	KnightPromo = 8,
-	BishopPromo = 9,
-	RookPromo = 10,
-	QueenPromo = 11,
-	KnightPromoCapture = 12,
-	BishopPromoCapture = 13,
-	RookPromoCapture = 14,
-	QueenPromoCapture = 15
-}MoveType;

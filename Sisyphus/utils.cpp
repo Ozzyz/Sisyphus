@@ -29,12 +29,12 @@ const wchar_t* unicode_pieces[12] = { L"\u265F" ,L"\u2659" ,
 L"\u265E" ,L"\u2658" , L"\u265D" ,L"\u2657" ,L"\u265C" , L"\u2656" ,
 L"\u265B" ,L"\u2655" , L"\u265A" ,L"\u2654" };
 
-const char* char_pieces[13] = { "wP", "bP",
-"wKn", "bKn",
-"wB", "bB",
-"wR", "bR",
-"wQ", "bQ",
-"wK", "bK","  "};
+const wchar_t* char_pieces[13] = { L"wP", L"bP",
+L"wKn", L"bKn",
+L"wB", L"bB",
+L"wR", L"bR",
+L"wQ", L"bQ",
+L"wK", L"bK",L"  "};
 
 void print_piece(Piece pc) {
 	//_setmode(_fileno(stdout), _O_U16TEXT);

@@ -119,18 +119,26 @@ void parse_fen(string fen,Board &boardclass) {
 		args.push_back(token);
 		fen.erase(0, pos + delimiter.length());
 	}
-	// Next turn:
-	std::cout << args[0];
-	next_move = args[0].compare("w") == 0 ? White : Black;
-	//Castling
-	castling = get_castle_permissions(args[1]);
-	// En passant
-	ep_square = args[2].compare("-") ? square_to_board_index(args[2]) : -99;
-	// TODO: Turns ++
+	try {
 
-	boardclass.set_castling_rights(castling);
-	boardclass.set_to_move(next_move);
-	boardclass.set_ep_square(ep_square);
+
+		// Next turn:
+		std::cout << args[0];
+		next_move = args[0].compare("w") == 0 ? White : Black;
+		//Castling
+		castling = get_castle_permissions(args[1]);
+		// En passant
+		ep_square = args[2].compare("-") ? square_to_board_index(args[2]) : -99;
+		// TODO: Turns ++
+
+		boardclass.set_castling_rights(castling);
+		boardclass.set_to_move(next_move);
+		boardclass.set_ep_square(ep_square);
+	}
+	catch(int e){
+		std::cout << "Could not parse fen! ";
+		return;
+	}
 }
 
 int get_castle_permissions(string castle_descriptor) {

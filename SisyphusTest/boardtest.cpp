@@ -2,15 +2,25 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "../Sisyphus/board.h"
+#include "../Sisyphus/utils.h"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 
+namespace Microsoft {
+	namespace VisualStudio {
+		namespace CppUnitTestFramework {
+			template <> static std::wstring ToString<Piece>(const Piece& c) { return char_pieces[c]; }
+		}
+	}
+}
+
 namespace SisyphusTest
 {
-	TEST_CLASS(UnitTest1)
+	TEST_CLASS(BoardTest)
 	{
+		Board boardc;
 	public:
-		// TODO: Check rook, knight and king attacks
+		// TODO: Change this test to board class with initialized fen
 		TEST_METHOD_INITIALIZE(Setup_Board)
 		{
 			// Testboard: https://lichess.org/editor/r1bqkb1r/ppp1pppp/2n3P1/Q5Rn/8/B6p/PPPPPPPP/RN2KBN1_w_KQkq_-
@@ -26,6 +36,9 @@ namespace SisyphusTest
 				bRook, bKnight, bBishop, bKing, bQueen, bBishop, Empty, bRook,
 			};
 			init_board(testboard);
+			// Set up board with default fen
+			boardc = Board();
+			
 		}
 
 		TEST_METHOD(Verify_G6_Pawn_Attacks_Two_Squares)
@@ -73,6 +86,18 @@ namespace SisyphusTest
 		{
 			Assert::AreEqual(true, is_attacked(55, White), L"A7-square");
 			Assert::AreEqual(true, is_attacked(53, White), L"C7-square");
+		}
+
+		TEST_METHOD(MakeMove_G2ToG3_Returns_CorrectModifiedBoard) {
+			int from_square = square_to_board_index("g2");
+			int to_square = square_to_board_index("g3");
+			Move move = Move(from_square, to_square, Quiet);
+			
+			// Assert that the square is occupied by a pawn from the start
+			Assert::AreEqual(wPawn, boardc.board[from_square]);
+			boardc.make_move(move);
+			Assert::AreEqual(Empty, boardc.board[from_square]);
+			Assert::AreEqual(wPawn, boardc.board[to_square]);
 		}
 	};
 }

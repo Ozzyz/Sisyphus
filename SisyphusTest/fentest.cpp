@@ -45,7 +45,7 @@ namespace SisyphusTest
 			int turns = 0;
 			Assert::AreEqual(3, boardc.get_turn(), L"Turns not equal");
 		}
-		TEST_METHOD(Parse_Starting_Board)
+		TEST_METHOD(Verify_StartingBoardFen_IsCorrect)
 		{
 			string starting_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 			parse_fen(starting_fen, boardc);
@@ -59,7 +59,6 @@ namespace SisyphusTest
 			string starting_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 			parse_fen(starting_fen, boardc);
 			vector<Move> available_moves = generate_all_moves(White, boardc);
-
 			Assert::AreEqual(20, (int)available_moves.size(), L"Available moves for white at startposition");
 			generate_all_moves(Black, boardc);
 			Assert::AreEqual(20, (int)available_moves.size(), L"Available moves for black at startposition");

@@ -63,6 +63,9 @@ public:
 	Board();
 	Board(string fen);
 	Piece board[BOARD_SIZE];
+	// Each piece number corresponds to the index. 
+	//The 13th space is to count number of empty squares (useful for evaluating open/closed positions)
+	int piece_count_list[13] = {0};
 	int get_ep_square();
 	int get_castling_rights();
 	Color get_to_move();
@@ -72,6 +75,8 @@ public:
 	void set_ep_square(int ep_square);
 	void set_castling_rights(int castling);
 	void set_board(Piece pieces[64]);
+	void make_move(Move & move);
+	void update_piece_count_list(Move & move);
 };
 
 
