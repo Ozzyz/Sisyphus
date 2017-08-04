@@ -3,8 +3,10 @@
 #define DllExport   __declspec(dllexport)
 #define DllImport __declspec(dllimport)
 #include "stdafx.h"
+#include "utils.h"
 #include <iostream>
 #include <vector>
+#include <string>
 //#include "fen.h"
 #include "move.h"
 using std::vector;
@@ -15,18 +17,6 @@ static const int H8 = 56;
 static const int A8 = 0;
 static const int H1 = 63;
 
-
-// With this setup, we can go color ^= 1 (XOR)
-typedef enum  { White = 0, Black = 1, None = 2 }Color;
-inline Color operator^(Color a, int b)
-{
-	return static_cast<Color>(static_cast<int>(a) ^ b);
-}
-inline Color operator==(Color a, int other) {
-	return static_cast<Color>(static_cast<int>(a) == other);
-}
-
-
 typedef enum {
 	wCastleKing = 8,
 	wCastleQueen = 4,
@@ -34,15 +24,7 @@ typedef enum {
 	bCastleQueen = 1
 }CastlePermissions;
 
-typedef enum {
-	wPawn = 0, bPawn = 1,
-	wKnight = 2, bKnight = 3,
-	wBishop = 4, bBishop = 5,
-	wRook = 6, bRook = 7,
-	wQueen = 8, bQueen = 9,
-	wKing = 10, bKing = 11,
-	Empty = 12
-}Piece;
+
 
 class Board {
 private:
@@ -77,9 +59,11 @@ public:
 	void set_board(Piece pieces[64]);
 	void make_move(Move & move);
 	void update_piece_count_list(Move & move);
+	void set_position(string fen);
 };
 
 
+static const string starting_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 extern Piece piece[64];
 extern Piece init_piece[64];
@@ -92,6 +76,6 @@ DllExport bool is_attacked(int square, Color color);
 //DllExport void generate_move(int from, int to, bool capture);
 DllExport bool is_color(Piece piece, Color color);
 
-vector<Move> generate_all_moves(Color current_side, Board);
+DllExport vector<Move> generate_all_moves(Color , Board &);
 void generate_move(int from, int to, int flags, vector<Move>&);
 

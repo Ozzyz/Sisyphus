@@ -8,21 +8,12 @@ White pieces start at index 0 (top)
 */
 
 
-#define PAWN(piece) (piece == 1 || piece == 0)
-#define ROW(x)			(x >> 3)
-#define COL(x)			(x & 7)
-
-static const string default_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 void parse_fen(string, Board&);
 
 
 Board::Board()
 {
-	turn = 0;
-	// Enable all castling rights
-	castling = 0b1111;
-	to_move = White;
-	parse_fen(default_fen, *this);
+	parse_fen(starting_fen, *this);
 }
 
 Board::Board(string fen):Board()
@@ -89,6 +80,11 @@ void Board::update_piece_count_list(Move &move) {
 	// Since a move can be both a capture and a promotion, we need to check for both
 	//TODO: Implement this.
 	return;
+}
+
+void Board::set_position(string fen)
+{
+	parse_fen(fen, *this);
 }
 
 Piece piece[64] = {};
@@ -200,7 +196,7 @@ bool is_attacked(int square, Color atk_color) {
 	return false;
 }
 
-vector<Move> generate_all_moves(Color current_side, Board board) {
+vector<Move> generate_all_moves(Color current_side, Board &board) {
 	// Add all possible pseudomoves (include illegal moves, for example that the moves puts the moving color in check)
 	// TODO: Castling moves
 	// TODO: Dont calculate this each round, maybe use some delta-algorithm? 

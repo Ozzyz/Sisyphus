@@ -1,6 +1,7 @@
 #pragma once
-
-
+#include <string>
+using std::string;
+#include "utils.h"
 /*
 The move is represented by a 16-bit field
 From lowest to highest:
@@ -50,33 +51,26 @@ class Move {
 protected:
 	unsigned short move;
 public:
-	Move(unsigned int from, unsigned int to, unsigned int flags) {
-		move = (from & 0b111111) | ((to & 0b111111) << 6) | ((flags & 0b111111) << 12);
-	}
-
-	unsigned int from_square() {
-		return move & 0b111111;
-	}
-
-	unsigned int to_square() {
-		return (move >> 6) & 0b111111;
-	}
-
-	unsigned int get_flags() {
-		return (move >> 12) & 0b111111;
-	}
-
-	bool is_capture() {
-		return get_flags() == Capture;
-	}
-	bool is_promotion() {
-		// TODO: Test this
-		return get_flags() & 0b1000;
-	}
 
 	bool operator==(Move a) const { return (move & 0xffff) == (a.move & 0xffff); }
 	bool operator!=(Move a) const { return (move & 0xffff) != (a.move & 0xffff); }
 
-	std::string toString() {return "From: " + std::to_string(from_square()) + ", To: " + std::to_string(to_square()) + ", Flags: " + std::to_string(get_flags()); }
+	string uci();
+
+	bool is_promotion();
+
+	Move(unsigned int from, unsigned int to, unsigned int flags);
+	Move(string move_string);
+
+	unsigned int from_square();
+
+	unsigned int to_square();
+
+	unsigned int get_flags();
+
+	bool is_capture();
+
+	string toString();
+
 };
 

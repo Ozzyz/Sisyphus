@@ -1,13 +1,10 @@
 
 #include "stdafx.h"
 #include "utils.h"
-#include <iostream>
-#include <string>
-#include "windows.h"
-#include "fcntl.h"
-#include "io.h"
-void print_piece(Piece);
+
+void print_piece(Piece piece);
 using namespace std;
+
 
 void print_board(Piece board[64]) {
 	for (int i = 0; i < 64; i++)
@@ -42,7 +39,7 @@ void print_piece(Piece pc) {
 	//HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
 	//DWORD written = 0;
 	// explicitly call the wide version (which always accepts UTF-16)
-	std::cout << char_pieces[pc];
+	std::wcout << char_pieces[pc];
 }
 
 int square_to_board_index(string square) {
@@ -50,8 +47,17 @@ int square_to_board_index(string square) {
 		throw std::invalid_argument("Cant convert - Illegal square!");
 	}
 	string files = "hgfedcba";
-	string ranks = "1234567";
+	string ranks = "12345678";
 	char file = square[0];
 	char rank = square[1];
 	return (int)files.find_first_of(file) + ranks.find_first_of(rank) * 8;
 }
+
+string board_index_to_square(int index) {
+	string files = "hgfedcba";
+	string ranks = "12345678";
+	char file = files.at(COL(index));
+	char rank = ranks.at(ROW(index));
+	return std::string{ file,rank };
+}
+

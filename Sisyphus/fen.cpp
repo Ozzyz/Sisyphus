@@ -5,7 +5,8 @@ This will be our sole way of initializing given board states (at least for now)
 */
 #include "stdafx.h"
 #include "fen.h"
-
+using std::cout;
+using std::endl;
 #define DllExport   __declspec(dllexport)
 #define DllImport __declspec(dllimport)
 using std::string;
@@ -20,6 +21,7 @@ void fill_empty(Piece board[64]) {
 }
 
 void parse_fen(string fen,Board &boardclass) {
+	cout << "info trying to parse fen " + fen << endl;
 	int castling = 0;
 	Color next_move;
 	int ep_square;
@@ -115,15 +117,11 @@ void parse_fen(string fen,Board &boardclass) {
 	std::vector<string> args;
 	while ((pos = fen.find(delimiter)) != std::string::npos) {
 		token = fen.substr(0, pos);
-		std::cout << pos << "Token " << token << std::endl;
+		std::cout << "info " <<pos << "Token " << token << std::endl;
 		args.push_back(token);
 		fen.erase(0, pos + delimiter.length());
 	}
 	try {
-
-
-		// Next turn:
-		std::cout << args[0];
 		next_move = args[0].compare("w") == 0 ? White : Black;
 		//Castling
 		castling = get_castle_permissions(args[1]);
@@ -136,7 +134,7 @@ void parse_fen(string fen,Board &boardclass) {
 		boardclass.set_ep_square(ep_square);
 	}
 	catch(int e){
-		std::cout << "Could not parse fen! ";
+		std::cout << "info: Could not parse fen! ";
 		return;
 	}
 }
