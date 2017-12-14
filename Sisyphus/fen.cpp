@@ -3,7 +3,6 @@
 This file is responsible for parsing FEN-strings to boards.
 This will be our sole way of initializing given board states (at least for now)
 */
-#include "stdafx.h"
 #include "fen.h"
 using std::cout;
 using std::endl;

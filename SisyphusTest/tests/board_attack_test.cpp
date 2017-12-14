@@ -1,6 +1,5 @@
-#include "stdafx.h"
-#include <gtest/gtest.h>
-#include "board.h"
+#include "../../Sisyphus/board.h"
+#include "gtest/gtest.h"
 
 
 TEST(BoardTest, BoardFindsAttackingSquaresOfPawns) {

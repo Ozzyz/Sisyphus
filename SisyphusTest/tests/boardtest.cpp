@@ -1,18 +1,8 @@
 
 #include "stdafx.h"
-#include "CppUnitTest.h"
-#include "../Sisyphus/board.h"
-#include "../Sisyphus/utils.h"
-using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-
-
-namespace Microsoft {
-	namespace VisualStudio {
-		namespace CppUnitTestFramework {
-			template <> static std::wstring ToString<Piece>(const Piece& c) { return char_pieces[c]; }
-		}
-	}
-}
+#include "../../Sisyphus/board.h"
+#include "../../Sisyphus/utils.h"
+#include "gtest/gtest.h"
 
 namespace SisyphusTest
 {

@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "board.h"
 /*
 This file evaluates the current chess position by using

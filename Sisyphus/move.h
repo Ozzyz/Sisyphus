@@ -60,7 +60,8 @@ public:
 	bool is_promotion();
 
 	Move(unsigned int from, unsigned int to, unsigned int flags);
-	Move(string move_string);
+
+	explicit Move(string move_string);
 
 	unsigned int from_square();
 

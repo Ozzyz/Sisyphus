@@ -2,7 +2,6 @@
 #define EXPORT_TEST_FUNCTIONS
 #define DllExport   __declspec(dllexport)
 #define DllImport __declspec(dllimport)
-#include "stdafx.h"
 #include "utils.h"
 #include <iostream>
 #include <vector>

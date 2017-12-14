@@ -1,9 +1,8 @@
 
 
 #include "stdafx.h"
-#include "CppUnitTest.h"
-#include "../Sisyphus/board.h"
-#include "../Sisyphus/fen.h"
+#include "../../Sisyphus/board.h"
+#include "../../Sisyphus/fen.h"
 
 
 namespace Microsoft {

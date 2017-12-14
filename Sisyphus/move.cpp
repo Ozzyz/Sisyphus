@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "move.h"
 #include <exception>
 Move::Move(unsigned int from, unsigned int to, unsigned int flags) {

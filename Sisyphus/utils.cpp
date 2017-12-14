@@ -1,5 +1,3 @@
-
-#include "stdafx.h"
 #include "utils.h"
 
 void print_piece(Piece piece);
