@@ -13,7 +13,7 @@ Move::Move(string move_string){
 	string to_square = move_string.substr(2, 4);
 	int from = square_to_board_index(from_square);
 	int to = square_to_board_index(to_square);
-	// TODO: Parse promotions
+	// TODO: Parse flags (promotions/promotions&capture)
 	int flags = 0;
 	move = (from & 0b111111) | ((to & 0b111111) << 6) | ((flags & 0b111111) << 12);
 }
@@ -31,7 +31,7 @@ unsigned int Move::get_flags() {
 }
 
 bool Move::is_capture() {
-	return get_flags() == Capture;
+	return get_flags() & 0b0100;
 }
 bool Move::is_promotion() {
 	// TODO: Test this

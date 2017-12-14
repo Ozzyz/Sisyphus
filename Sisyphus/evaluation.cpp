@@ -93,9 +93,10 @@ int blackSquareMirror[64]{
 };
 
 
-int eval_board_pos(Piece board[64], int pieceCount[13], Color current_side) {
+int eval_board_pos(Board &board) {
 	// Iterate through each piece for the side, summing up centipawns for each positioned
 	// piece
+	// Returns the evaluation of the position in centipawns
 	//TODO: Implement this
 	return 0;
 }

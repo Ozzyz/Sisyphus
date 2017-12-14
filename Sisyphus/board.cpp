@@ -68,10 +68,59 @@ void Board::set_board(Piece pieces[64]) {
 
 void Board::make_move(Move &move) {
 	// Makes the given move on the board, update piece count for captures/promotions
+    // TODO: Handle en passant, castling rights
 	update_piece_count_list(move);
+    if(move.is_capture()){
+        last_captured_piece = board[move.to_square()];
+    }
 	Piece moved = board[move.from_square()];
 	board[move.from_square()] = Empty;
 	board[move.to_square()] = moved;
+}
+
+void Board::undo_move(Move &move){
+    // Undoes the previous move. This should only ever be called if the move truly is the previous one.
+    int from = move.from_square();
+    int to = move.to_square();
+    // Move the moved piece to its previous position
+    board[from] = board[to];
+
+    if(move.is_capture()){
+        if(move.get_flags() == EnPassant) {
+            ep_square = move.to_square();
+            // The captured piece is always the row behind the to_square of the pawn
+            int cap_square;
+            Piece piece;
+            if (to_move == Black) {
+                // White captured the piece
+                cap_square = to - 8;
+                piece = bPawn;
+            } else {
+                cap_square = to + 8;
+                piece = wPawn;
+            }
+            board[cap_square] = piece;
+        }
+        else{
+            // Restore previously captured piece, re-update piece list
+            board[to] = last_captured_piece;
+            piece_count_list[last_captured_piece] += 1;
+            last_captured_piece = Empty;
+        }
+    }
+    if(move.is_promotion()){
+        // Since white = 1 and black = 0, and pieces are represented after each other (wPiece = bPiece - 1), use the
+        // color of last turn as decrement
+        int last_turn_color = to_move^1;
+        Piece piece = board[to];
+        piece_count_list[piece - last_turn_color] -= 1;
+        // Move the promoted pawn back into original position
+        // Since wPawn = 0 and bPawn = 1, just use the color of the person to move
+        board[from] = static_cast<Piece>(to_move);
+    }
+    // Adjust color and turn to fit last turn
+    to_move ^= 1;
+    turn -= 1;
 }
 
 void Board::update_piece_count_list(Move &move) {
@@ -82,8 +131,10 @@ void Board::update_piece_count_list(Move &move) {
 
 void Board::set_position(string fen)
 {
-	parse_fen(fen, *this);
+	parse_fen(std::move(fen), *this);
 }
+
+
 
 Piece piece[64] = {};
 
@@ -258,7 +309,7 @@ vector<Move> generate_all_moves(Color current_side, Board &board) {
 }
 
 void generate_move(int from, int to, int flags, vector<Move> &available_moves) {
-	available_moves.push_back(Move(from, to, flags));
+	available_moves.emplace_back(from, to, flags);
 }
 
 

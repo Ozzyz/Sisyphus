@@ -7,4 +7,4 @@ add_library(Sisyphus
         main.cpp
         move.cpp
         utils.cpp
-        )
+        search.cpp search.h evaluation.h)

@@ -47,6 +47,7 @@ public:
 	// Each piece number corresponds to the index. 
 	//The 13th space is to count number of empty squares (useful for evaluating open/closed positions)
 	int piece_count_list[13] = {0};
+    Piece last_captured_piece = Empty; // Used to undo moves
 	int get_ep_square();
 	int get_castling_rights();
 	Color get_to_move();
@@ -59,6 +60,8 @@ public:
 	void make_move(Move & move);
 	void update_piece_count_list(Move & move);
 	void set_position(string fen);
+
+    void undo_move(Move &move);
 };
 
 

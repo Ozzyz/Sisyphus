@@ -14,7 +14,7 @@ Table for the last 4 bits:
 0001 : double pawn push (Move two squares from initial pawn position)
 0010 : King castle
 0011 : Queen castle
-0100 : Captures
+x1xx : Captures
 0101 : En-passant capture
 0110 : Unused
 0111 : Unused
@@ -27,8 +27,6 @@ Table for the last 4 bits:
 1110 :  Rook promotion capture
 1111 : Queen promotion capture
 */
-
-
 
 typedef enum {
 	Quiet = 0,

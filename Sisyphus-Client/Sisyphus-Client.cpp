@@ -56,11 +56,12 @@ void parse_uci_position(string line, Board &board) {
 void parse_uci_go(string line, Board &board) {
 	// Format: go wtime 289536 btime 300000 winc 0 binc 0
 	// Find all moves
-	//print_board(board.board);
 	vector<Move> moves = generate_all_moves((Color)board.get_to_move(), board);
 	cout << "info choosing best move out of " << moves.size() << "available moves" << endl;
 	// Make move (for now, just select the first)
 	Move chosen_move = moves[0];
+
+    // Move chosen_move = search(&Board);
 	// Make the move on the board
 	board.make_move(chosen_move);
 	// Return move to UCI engine
