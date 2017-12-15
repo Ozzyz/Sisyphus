@@ -5,6 +5,6 @@
 #ifndef SISYPHUSMAIN_EVALUATION_H
 #define SISYPHUSMAIN_EVALUATION_H
 
-int eval_board_pos(Board);
+int eval_board_pos(Board&);
 
 #endif //SISYPHUSMAIN_EVALUATION_H

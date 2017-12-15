@@ -119,7 +119,7 @@ void Board::undo_move(Move &move){
         board[from] = static_cast<Piece>(to_move);
     }
     // Adjust color and turn to fit last turn
-    to_move ^= 1;
+    to_move = to_move^1;
     turn -= 1;
 }
 

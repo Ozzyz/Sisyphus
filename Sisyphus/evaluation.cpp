@@ -69,7 +69,7 @@ int queenSquareEval[64]{
 };
 
 
-// TODO: Fill this in
+// TODO: Fill this in. Kings are good in the centre if the queens are off (usually)
 int kingSquareEval[64]{
 	0,    0,    0,  0,  0,  0,   0,  0,
 	0,    0,    0,  0,  0,  0,   0,  0,
@@ -97,6 +97,35 @@ int eval_board_pos(Board &board) {
 	// Iterate through each piece for the side, summing up centipawns for each positioned
 	// piece
 	// Returns the evaluation of the position in centipawns
-	//TODO: Implement this
-	return 0;
+    int score = 0;
+    for(int i = 0; i<64; i++){
+        int index = i;
+        if(board.get_to_move() == Black){
+            index = blackSquareMirror[i];
+        }
+        // Iterate over all pieces, and add their score to the sum
+        //Since the piece list is alternating wPawn=0, bPawn=1, wKnight=3, ..., add the color for example(Black = 1) to piece
+        // to get the correct piece
+        for(int pc = 0; pc<12; pc+= 2){
+            auto piece = static_cast<Piece>(pc + board.get_to_move());
+            if(board.board[index] == piece){
+                if(pc == wPawn){
+                    score += pawnSquareEval[index];
+                }else if(pc == wKnight){
+                    score += knightSquareEval[index];
+                }else if(pc == wBishop){
+                    score += bishopSquareEval[index];
+                }else if(pc == wRook){
+                    score += rookSquareEval[index];
+                }else if(pc == wQueen){
+                    score += queenSquareEval[index];
+                }else if(pc == wKing){
+                    score += kingSquareEval[index];
+                }
+            }
+        }
+
+    }
+    //std::cout << "Evaluated score of board to " << score << std::endl;
+    return score;
 }

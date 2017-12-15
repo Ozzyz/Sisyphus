@@ -6,6 +6,8 @@
 #define SISYPHUSMAIN_SEARCH_H
 
 #include "move.h"
+#include "board.h"
 
+Move search(Board&);
 
 #endif //SISYPHUSMAIN_SEARCH_H
