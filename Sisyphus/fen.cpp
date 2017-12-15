@@ -41,10 +41,12 @@ void parse_fen(string fen,Board &boardclass) {
 		char cur = fen[i];
 		Piece pc = Empty;
 		if (isdigit(cur)) {
+			// Using the fact that the difference in the chars is the difference of the value they represent
 			int num_empties = cur - '0';
 			file -= num_empties;
 			count += num_empties;
 		}
+		// Encountered new row
 		else if(cur == '/'){
 			// Reset file counter
 			file = 7;
